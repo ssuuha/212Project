@@ -1,11 +1,10 @@
 package ds212;
 
-//
-class Doc_Rank {
+class DocRank {
 	int id;
 	int rank;
 
-	public Doc_Rank(int id, int rank) {
+	public DocRank(int id, int rank) {
 		this.id = id;
 		this.rank = rank;
 	}
@@ -15,27 +14,26 @@ class Doc_Rank {
 	}
 }
 
-//Using sorted list with ordering ids
-public class Ranking {
+public class Rank {
 	static String Query;
-	static InvertedIndexBST inverted;
+	static InverIndexBST inverted;
 	static Index index1;
 	static LinkedList<Integer> queryDocs;
-	static LinkedList<Doc_Rank> rankedDocs;
+	static LinkedList<DocRank> rankedDocs;
 
-	public Ranking(InvertedIndexBST inverted, Index index1, String Query) {
+	public Rank(InverIndexBST inverted, Index index1, String Query) {
 		this.inverted = inverted;
 		this.index1 = index1;
 		this.Query = Query;
 		queryDocs = new LinkedList<Integer>();
-		rankedDocs = new LinkedList<Doc_Rank>();
+		rankedDocs = new LinkedList<DocRank>();
 	}
 
 	public void displayAllDocList() {
 		System.out.println("Displaying documents with scores...");
 
 		if (rankedDocs.empty()) {
-			System.out.println("Empty list, no ranked documents found.");
+			System.out.println("Empty list, no ranked documents found");
 			return;
 		}
 
@@ -53,7 +51,6 @@ public class Ranking {
 		return index1.getAllDocGivenID(id);
 	}
 
-	// عدد مرات تكرار الكلمة بالملف
 	public static int termFrequency(Document document, String term) {
 		int frequency = 0;
 		LinkedList<String> words = document.words;
@@ -65,7 +62,7 @@ public class Ranking {
 				frequency++;
 			words.findNext();
 		}
-		if (words.retrieve().equalsIgnoreCase(term)) // last wors
+		if (words.retrieve().equalsIgnoreCase(term)) //
 			frequency++;
 		return frequency;
 	}
@@ -75,29 +72,29 @@ public class Ranking {
 			return 0;
 		String terms[] = Query.split("\\s+");
 		int totalFreq = 0;
-		for (int i = 0; i < terms.length; i++) // loops to all words and count word frequency
+		for (int i = 0; i < terms.length; i++)
 			totalFreq += termFrequency(document, terms[i].trim().toLowerCase());
 		return totalFreq;
 	}
 
 	public static void RankQuery(String Query) {
-		LinkedList<Integer> docIDs = new LinkedList<Integer>();
+		LinkedList<Integer> docuIDs = new LinkedList<Integer>();
 		if (Query.isEmpty())
 			return;
 
-		String[] terms = Query.split("\\s+"); // if there is more than one space
+		String[] terms = Query.split("\\s+");
 		boolean found = false;
 
 		for (int i = 0; i < terms.length; i++) {
 			found = inverted.searchWordInInverted(terms[i].trim().toLowerCase());
 			if (found)
-				docIDs = inverted.inverted_index.retrieve().doc_IDS;
-			AddingInListSorted(docIDs);
+				docuIDs = inverted.inverted_index.retrieve().doc_IDS;
+			AddingInListSorted(docuIDs);
 
 		}
 	}
 
-	public static void AddingInListSorted(LinkedList<Integer> A) { // Addtpquerydoc
+	public static void AddingInListSorted(LinkedList<Integer> A) {
 		if (A.empty())
 			return;
 
@@ -163,16 +160,16 @@ public class Ranking {
 		while (!queryDocs.last()) {
 			Document document = getDocGivenID(queryDocs.retrieve());
 			int Rank = getRankScore(document, Query);
-			insert_sorted_list(new Doc_Rank(queryDocs.retrieve(), Rank)); // Adding the document in order
+			insert_sorted_list(new DocRank(queryDocs.retrieve(), Rank)); // Adding the document in order
 			queryDocs.findNext();
 		}
 		Document document = getDocGivenID(queryDocs.retrieve());
 		int Rank = getRankScore(document, Query);
-		insert_sorted_list(new Doc_Rank(queryDocs.retrieve(), Rank));
+		insert_sorted_list(new DocRank(queryDocs.retrieve(), Rank));
 
 	}
 
-	public static void insert_sorted_list(Doc_Rank documentRanked) {
+	public static void insert_sorted_list(DocRank documentRanked) {
 		if (rankedDocs.empty()) {
 			rankedDocs.insert(documentRanked);
 			return;
@@ -180,7 +177,7 @@ public class Ranking {
 		rankedDocs.findFirst();
 		while (!rankedDocs.last()) {
 			if (documentRanked.rank > rankedDocs.retrieve().rank) {
-				Doc_Rank documentRanked1 = rankedDocs.retrieve();
+				DocRank documentRanked1 = rankedDocs.retrieve();
 				rankedDocs.update(documentRanked);
 				rankedDocs.insert(documentRanked1);
 				return;
@@ -188,7 +185,7 @@ public class Ranking {
 				rankedDocs.findNext();
 		}
 		if (documentRanked.rank > rankedDocs.retrieve().rank) {
-			Doc_Rank documentRanked1 = rankedDocs.retrieve();
+			DocRank documentRanked1 = rankedDocs.retrieve();
 			rankedDocs.update(documentRanked);
 			rankedDocs.insert(documentRanked1);
 			return;

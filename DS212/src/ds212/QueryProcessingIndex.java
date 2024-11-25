@@ -9,28 +9,28 @@ public class QueryProcessingIndex {
 	}
 
 	public static LinkedList<Integer> MixedQuery(String Query) {
-		LinkedList<Integer> listA = new LinkedList<Integer>();
-		LinkedList<Integer> listB = new LinkedList<Integer>();
+		LinkedList<Integer> list1 = new LinkedList<Integer>();
+		LinkedList<Integer> list2 = new LinkedList<Integer>();
 		if (Query.length() == 0)
-			return listA;
-		String ORs[] = Query.split("OR"); // less priorty than AND
+			return list1;
+		String ORs[] = Query.split("OR");
 
-		listA = AndQuery(ORs[0]);
+		list1 = AndQuery(ORs[0]);
 		for (int i = 1; i < ORs.length; i++) {
-			listB = AndQuery(ORs[i]);
-			listA = ORQueryUnion(listA, listB);
+			list2 = AndQuery(ORs[i]);
+			list1 = ORQueryUnion(list1, list2);
 		}
-		return listA;
+		return list1;
 	}
 
-	public static LinkedList<Integer> AndQuery(String Q) {// Q=Query
-		LinkedList<Integer> listA = new LinkedList<Integer>();// first list A
-		LinkedList<Integer> listB = new LinkedList<Integer>();// second list B
+	public static LinkedList<Integer> AndQuery(String Q) {
+		LinkedList<Integer> listA = new LinkedList<Integer>();
+		LinkedList<Integer> listB = new LinkedList<Integer>();
 		String terms[] = Q.split("AND");
 
 		if (terms.length == 0)
 			return listA;
-		listA = index.getAllDocGivenTerm(terms[0].trim().toLowerCase()); // search
+		listA = index.getAllDocGivenTerm(terms[0].trim().toLowerCase());
 		for (int i = 1; i < terms.length; i++) {
 			listB = index.getAllDocGivenTerm(terms[i].trim().toLowerCase()); // search
 			listA = AndQueryIntersection(listA, listB);
@@ -56,9 +56,9 @@ public class QueryProcessingIndex {
 						listB.findNext();
 					else
 						break;
-				} // end S loop
+				}
 
-			} // not found loop
+			}
 			if (!listA.last())
 				listA.findNext();
 			else
@@ -67,16 +67,16 @@ public class QueryProcessingIndex {
 		return result;
 	}
 
-	public static LinkedList<Integer> ORQuery(String Q) {// Q=Query
-		LinkedList<Integer> listA = new LinkedList<Integer>();// first list A
-		LinkedList<Integer> listB = new LinkedList<Integer>();// second list B
+	public static LinkedList<Integer> ORQuery(String Q) {
+		LinkedList<Integer> listA = new LinkedList<Integer>();
+		LinkedList<Integer> listB = new LinkedList<Integer>();
 		String terms[] = Q.split("OR");
 
 		if (terms.length == 0)
 			return listA;
-		listA = index.getAllDocGivenTerm(terms[0].trim().toLowerCase()); // search
+		listA = index.getAllDocGivenTerm(terms[0].trim().toLowerCase());
 		for (int i = 1; i < terms.length; i++) {
-			listB = index.getAllDocGivenTerm(terms[i].trim().toLowerCase()); // search
+			listB = index.getAllDocGivenTerm(terms[i].trim().toLowerCase());
 
 			listA = ORQueryUnion(listA, listB);
 		}

@@ -1,15 +1,15 @@
 package ds212;
 
 //inverted by binary search tree
-public class InvertedIndexBST {
+public class InverIndexBST {
 	BSTree<Word> inverted_index;
 
-	public InvertedIndexBST() {
+	public InverIndexBST() {
 		inverted_index = new BSTree<Word>();
 	}
 
 	public void add(String text, int id) {
-		// If the word isn't found
+		
 		if (!searchWordInInverted(text)) {
 			Word word = new Word(text);
 			word.doc_IDS.insert(id);

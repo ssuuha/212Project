@@ -1,9 +1,9 @@
 package ds212;
 
 public class QueryProcessingBST {
-	static InvertedIndexBST inverted;
+	static InverIndexBST inverted;
 
-	public QueryProcessingBST(InvertedIndexBST inverted) {
+	public QueryProcessingBST(InverIndexBST inverted) {
 		this.inverted = inverted;
 	}
 

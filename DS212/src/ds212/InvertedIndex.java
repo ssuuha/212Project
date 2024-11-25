@@ -7,8 +7,8 @@ public class InvertedIndex {
 		inverted_index = new LinkedList<Word>();
 	}
 
-	public void add(String text, int id) {
-		// If the word isn't found
+	public void addinv(String text, int id) {
+		
 		if (!searchWordInInverted(text)) {
 			Word word = new Word(text);
 			word.doc_IDS.insert(id);
@@ -33,7 +33,7 @@ public class InvertedIndex {
 		return false;
 	}
 
-	public void display_inverted_index() {
+	public void displayInvertedIndex() {
 		if (inverted_index == null) {
 			System.out.println("Null inverted index");
 			return;
@@ -46,8 +46,7 @@ public class InvertedIndex {
 			inverted_index.retrieve().display();
 			inverted_index.findNext();
 		}
-		// For the last word
-		inverted_index.retrieve().display();
+				inverted_index.retrieve().display();
 
 	}
 
